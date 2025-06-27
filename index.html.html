@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פרטי התעניינות בנכס</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        .icon {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 התעניינות בנכס</h1>
+            <p>אנא מלא את הפרטים הבאים ונחזור אליך בהקדם</p>
+        </div>
+
+        <form id="propertyForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">שם פרטי <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">שם משפחה <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">טלפון נייד <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="050-1234567" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">אימייל <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="about">ספר/י קצת על עצמך - מי הולך לגור בנכס? <span class="required">*</span></label>
+                <textarea id="about" name="about" placeholder="למשל: זוג צעיר, משפחה עם ילדים, רווק וכו'" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="propertyDetails">איזה נכס את/ה מחפש/ת? <span class="required">*</span></label>
+                <textarea id="propertyDetails" name="propertyDetails" placeholder="תאר/י את הנכס הרצוי: מספר חדרים, אזור מועדף, תקציב, מועד כניסה וכל פרט נוסף שחשוב לך" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                שלח פרטים 📤
+            </button>
+
+            <div class="success-message" id="successMessage">
+                תודה! הפרטים נשלחו בהצלחה. נחזור אליך בהקדם האפשרי 🎉
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('propertyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // איסוף הנתונים מהטופס
+            const formData = new FormData(this);
+            const data = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                about: formData.get('about'),
+                propertyDetails: formData.get('propertyDetails')
+            };
+
+            // יצירת הודעת סיכום
+            const summary = `🏠 לקוח חדש התעניין בנכס!
+
+👤 פרטי הלקוח:
+שם: ${data.firstName} ${data.lastName}
+טלפון: ${data.phone}
+אימייל: ${data.email}
+
+🏡 על הלקוח:
+${data.about}
+
+🔍 הנכס המבוקש:
+${data.propertyDetails}
+
+📅 תאריך פנייה: ${new Date().toLocaleDateString('he-IL')} ${new Date().toLocaleTimeString('he-IL')}`;
+
+            // שליחה לוואטסאפ
+            const whatsappNumber = "972504545555";
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(summary)}`;
+            
+            // שליחה למייל
+            const emailSubject = "לקוח חדש התעניין בנכס - " + data.firstName + " " + data.lastName;
+            const emailBody = summary.replace(/\n/g, '%0D%0A');
+            const emailUrl = `mailto:romano.nadlan@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(summary)}`;
+            
+            // הצגת הודעת הצלחה
+            document.getElementById('successMessage').style.display = 'block';
+            this.style.display = 'none';
+            
+            // פתיחת וואטסאפ ומייל (עם עיכוב קצר)
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 1000);
+            
+            setTimeout(() => {
+                window.open(emailUrl, '_blank');
+            }, 2000);
+        });
+
+        // ולידציה בזמן אמת לטלפון
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('972')) {
+                value = value.substring(3);
+            }
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = value;
+                } else if (value.length <= 6) {
+                    value = value.substring(0, 3) + '-' + value.substring(3);
+                } else {
+                    value = value.substring(0, 3) + '-' + value.substring(3, 6) + '-' + value.substring(6, 10);
+                }
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
