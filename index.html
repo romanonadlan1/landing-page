@@ -237,36 +237,49 @@
                 propertyDetails: formData.get('propertyDetails')
             };
 
-            // יצירת הודעת סיכום
-            const summary = `🏠 לקוח חדש התעניין בנכס!
+            // יצירת הודעת סיכום לוואטסאפ
+            const whatsappSummary = `🏠 לקוח חדש התעניין בנכס!
 
-👤 פרטי הלקוח:
-שם: ${data.firstName} ${data.lastName}
+👤 ${data.firstName} ${data.lastName}
+📞 ${data.phone}
+📧 ${data.email}
+
+🏡 על הלקוח: ${data.about}
+
+🔍 נכס מבוקש: ${data.propertyDetails}
+
+📅 ${new Date().toLocaleDateString('he-IL')} ${new Date().toLocaleTimeString('he-IL')}`;
+
+            // יצירת הודעת מייל קצרה יותר
+            const emailSummary = `לקוח חדש: ${data.firstName} ${data.lastName}
 טלפון: ${data.phone}
-אימייל: ${data.email}
-
-🏡 על הלקוח:
-${data.about}
-
-🔍 הנכס המבוקש:
-${data.propertyDetails}
-
-📅 תאריך פנייה: ${new Date().toLocaleDateString('he-IL')} ${new Date().toLocaleTimeString('he-IL')}`;
+מייל: ${data.email}
+תיאור: ${data.about}
+נכס מבוקש: ${data.propertyDetails}
+תאריך: ${new Date().toLocaleDateString('he-IL')}`;
 
             // שליחה לוואטסאפ
             const whatsappNumber = "972504545555";
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(summary)}`;
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappSummary)}`;
             
-            // שליחה למייל
-            const emailSubject = "לקוח חדש התעניין בנכס - " + data.firstName + " " + data.lastName;
-            const emailBody = summary.replace(/\n/g, '%0D%0A');
-            const emailUrl = `mailto:romano.nadlan@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(summary)}`;
+            // שליחה למייל (קצר יותר)
+            const emailSubject = `לקוח חדש: ${data.firstName} ${data.lastName}`;
+            const emailUrl = `mailto:romano.nadlan@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailSummary)}`;
             
-            // הצגת הודעת הצלחה
-            document.getElementById('successMessage').style.display = 'block';
+            // הצגת הודעת הצלחה עם אפשרות העתקה
+            const successDiv = document.getElementById('successMessage');
+            successDiv.innerHTML = `
+                <h3>תודה! הפרטים נשלחו</h3>
+                <p>פרטי הלקוח:</p>
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0; text-align: right;">
+                    ${emailSummary.replace(/\n/g, '<br>')}
+                </div>
+                <button onclick="copyToClipboard('${emailSummary.replace(/'/g, "\\'")}')">📋 העתק פרטים</button>
+            `;
+            successDiv.style.display = 'block';
             this.style.display = 'none';
             
-            // פתיחת וואטסאפ ומייל (עם עיכוב קצר)
+            // פתיחת וואטסאפ ומייל
             setTimeout(() => {
                 window.open(whatsappUrl, '_blank');
             }, 1000);
@@ -275,6 +288,13 @@ ${data.propertyDetails}
                 window.open(emailUrl, '_blank');
             }, 2000);
         });
+
+        // פונקציה להעתקת טקסט
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('הפרטים הועתקו! אפשר להדביק אותם במייל או בוואטסאפ');
+            });
+        }
 
         // ולידציה בזמן אמת לטלפון
         document.getElementById('phone').addEventListener('input', function(e) {
